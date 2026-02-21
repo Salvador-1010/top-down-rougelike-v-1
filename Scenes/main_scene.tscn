@@ -3385,5 +3385,4 @@ tile_map_data = PackedByteArray("AAD5//v/CAAAAAAAAAA=")
 tile_set = SubResource("TileSet_psl12")
 
 [node name="Player" parent="." instance=ExtResource("3_jv6wh")]
-visible = false
 position = Vector2(-34, -42)

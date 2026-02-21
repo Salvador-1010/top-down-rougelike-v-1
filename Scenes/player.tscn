@@ -1,7 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://u10t0wdca25d"]
+[gd_scene load_steps=22 format=3 uid="uid://u10t0wdca25d"]
 
-[ext_resource type="Script" uid="uid://c8i8tbfohqy1b" path="res://Scripts/player.gd" id="1_i3pqv"]
 [ext_resource type="Texture2D" uid="uid://bjletbdkmms6g" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Idle.png" id="2_cvnsp"]
+[ext_resource type="Script" uid="uid://yup8tr4tmc68" path="res://Scripts/idle_state.gd" id="3_6t5aa"]
+[ext_resource type="Script" uid="uid://boye447vuxbdg" path="res://Scripts/player_state_machine.gd" id="3_vgqql"]
+[ext_resource type="Texture2D" uid="uid://cu7m5gxj8a5js" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Walk.png" id="3_x3wgy"]
+[ext_resource type="Script" uid="uid://0sx64n6eb8xv" path="res://Scripts/run_state.gd" id="6_3smsa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6t5aa"]
 atlas = ExtResource("2_cvnsp")
@@ -27,6 +30,38 @@ region = Rect2(400, 0, 100, 100)
 atlas = ExtResource("2_cvnsp")
 region = Rect2(500, 0, 100, 100)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1ek2"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tx1dd"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gymyn"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pu2lt"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ukyrk"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7dp3o"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h4iuc"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(600, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fd4e3"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(700, 0, 100, 100)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_op7ga"]
 animations = [{
 "frames": [{
@@ -51,6 +86,35 @@ animations = [{
 "loop": true,
 "name": &"Idle",
 "speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1ek2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tx1dd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gymyn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pu2lt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ukyrk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7dp3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h4iuc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fd4e3")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 9.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q13i1"]
@@ -58,16 +122,28 @@ radius = 5.0
 height = 16.0
 
 [node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_i3pqv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_op7ga")
-animation = &"Idle"
+animation = &"Walk"
 autoplay = "Idle"
-frame_progress = 0.15827554
+frame_progress = 0.24412702
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_q13i1")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
+
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
+script = ExtResource("3_vgqql")
+initialState = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("player", "playerAnimator")]
+script = ExtResource("3_6t5aa")
+player = NodePath("../..")
+playerAnimator = NodePath("../../AnimatedSprite2D")
+
+[node name="Walk" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("6_3smsa")
+speed = 300.0
