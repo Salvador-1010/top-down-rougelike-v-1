@@ -13,7 +13,10 @@ func enter() -> void:
 	playerAnimator.play("Walk")
 
 func update(_delta : float) -> void:
-	
+	#swaps to attack state even if moving if input is detected
+	if Input.is_action_pressed("Attack"):
+		Transitioned.emit(self, "Attack")
+	#makes the sprite face whichever direction the player is moving/facing
 	if player.velocity.x:
 		playerAnimator.flip_h = player.velocity.x < 0
 

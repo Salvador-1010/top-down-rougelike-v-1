@@ -5,7 +5,7 @@ class_name playeridle
 @export var playerAnimator: AnimatedSprite2D
 
 func enter():
-	pass
+	playerAnimator.play("Idle")
 	
 func update(_delta : float) -> void:
 	if Input.get_vector("move_left", "move_right", "move_up", "move_down") != Vector2.ZERO:
