@@ -1,10 +1,40 @@
-[gd_scene load_steps=22 format=3 uid="uid://u10t0wdca25d"]
+[gd_scene load_steps=31 format=3 uid="uid://u10t0wdca25d"]
 
+[ext_resource type="Texture2D" uid="uid://dv4ercgaef22d" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Attack01.png" id="1_x3wgy"]
 [ext_resource type="Texture2D" uid="uid://bjletbdkmms6g" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Idle.png" id="2_cvnsp"]
 [ext_resource type="Script" uid="uid://yup8tr4tmc68" path="res://Scripts/idle_state.gd" id="3_6t5aa"]
 [ext_resource type="Script" uid="uid://boye447vuxbdg" path="res://Scripts/player_state_machine.gd" id="3_vgqql"]
 [ext_resource type="Texture2D" uid="uid://cu7m5gxj8a5js" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Walk.png" id="3_x3wgy"]
 [ext_resource type="Script" uid="uid://0sx64n6eb8xv" path="res://Scripts/run_state.gd" id="6_3smsa"]
+[ext_resource type="Script" uid="uid://dtodgnftamjan" path="res://Scripts/attack.gd" id="7_3smsa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqcod"]
+atlas = ExtResource("1_x3wgy")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_igrcy"]
+atlas = ExtResource("1_x3wgy")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fs7ks"]
+atlas = ExtResource("1_x3wgy")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6n3p"]
+atlas = ExtResource("1_x3wgy")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_olqyp"]
+atlas = ExtResource("1_x3wgy")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wpjfl"]
+atlas = ExtResource("1_x3wgy")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bi64h"]
+atlas = ExtResource("1_x3wgy")
+region = Rect2(600, 0, 100, 100)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6t5aa"]
 atlas = ExtResource("2_cvnsp")
@@ -66,6 +96,32 @@ region = Rect2(700, 0, 100, 100)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_qqcod")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_igrcy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fs7ks")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6n3p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_olqyp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wpjfl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bi64h")
+}],
+"loop": true,
+"name": &"Attack",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_6t5aa")
 }, {
 "duration": 1.0,
@@ -125,9 +181,9 @@ height = 16.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_op7ga")
-animation = &"Walk"
+animation = &"Attack"
 autoplay = "Idle"
-frame_progress = 0.24412702
+frame_progress = 0.85516375
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_q13i1")
@@ -137,13 +193,23 @@ zoom = Vector2(4, 4)
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
 script = ExtResource("3_vgqql")
-initialState = NodePath("Idle")
+initialState = NodePath("Walk")
 
 [node name="Idle" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("player", "playerAnimator")]
 script = ExtResource("3_6t5aa")
 player = NodePath("../..")
 playerAnimator = NodePath("../../AnimatedSprite2D")
 
-[node name="Walk" type="Node" parent="PlayerStateMachine"]
+[node name="Walk" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("player", "playerAnimator")]
 script = ExtResource("6_3smsa")
-speed = 300.0
+speed = 175.0
+player = NodePath("../..")
+playerAnimator = NodePath("../../AnimatedSprite2D")
+friction = 25.0
+
+[node name="Attack" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("player", "playerAnimator")]
+script = ExtResource("7_3smsa")
+damage = 25.0
+player = NodePath("../..")
+playerAnimator = NodePath("../../AnimatedSprite2D")
+attack_cooldown = 2.0

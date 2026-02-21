@@ -27,8 +27,7 @@ func _physics_process(delta: float) -> void:
 	if currentState:
 		currentState.physics_update(delta)
 
-func on_child_transition(state, new_state_name) -> void:
-	print("trans")
+func on_child_transition(state : State, new_state_name) -> void:
 	#checks to make sure the active state IS the one who called tranisitoned
 	if state != currentState:
 		return
