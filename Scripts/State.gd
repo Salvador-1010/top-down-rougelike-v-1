@@ -3,6 +3,8 @@ class_name State
 
 signal Transitioned
 
+var player :CharacterBody2D
+
 func enter() -> void:
 	pass
 

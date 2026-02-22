@@ -8,16 +8,25 @@ class_name StateMachine
 var currentState : State
 #variable to store all of the states of the machine
 var states : Dictionary = {}
+#creates a reference to the player node in order to give it to all the children to access
+var playerRef : CharacterBody2D
 
 func _ready() -> void:
+	playerRef = get_parent() as CharacterBody2D
 	for child in get_children():
 		if child is State:
+			#adds all the children state to a dictionary for storage
 			states[child.name.to_lower()] = child
+			#connects all of the childrens tranisiton functions 
 			child.Transitioned.connect(on_child_transition)
+			#gives all the children a reference to the player node (for sprite/physics updating)
+			child.player = playerRef
 			
 	if initialState:
-		initialState.enter()
+		#sets the current active state to whatever the initial state was (if given one)
 		currentState = initialState
+		#does not actually ENTER the initial state until the player "onready" vars are ready
+		call_deferred("_enter_initial_state")
 			
 func _process(delta: float) -> void:
 	if currentState:
@@ -41,3 +50,6 @@ func on_child_transition(state : State, new_state_name) -> void:
 		currentState.exit()
 	new_state.enter()
 	currentState = new_state
+
+func _enter_initial_state() -> void:
+	currentState.enter()

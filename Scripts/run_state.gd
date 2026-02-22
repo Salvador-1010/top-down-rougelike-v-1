@@ -2,15 +2,13 @@ extends State
 class_name playerwalk
 
 @export var speed: float
-@export var player: CharacterBody2D
-@export var playerAnimator: AnimatedSprite2D
 @export var friction: float
 
 func exit() -> void:
 	pass
 	
 func enter() -> void:
-	playerAnimator.play("Walk")
+	player.sprite.play("Walk")
 
 func update(_delta : float) -> void:
 	#swaps to attack state even if moving if input is detected
@@ -18,7 +16,7 @@ func update(_delta : float) -> void:
 		Transitioned.emit(self, "Attack")
 	#makes the sprite face whichever direction the player is moving/facing
 	if player.velocity.x:
-		playerAnimator.flip_h = player.velocity.x < 0
+		player.sprite.flip_h = player.velocity.x < 0
 
 func physics_update(_delta: float) -> void:
 	
