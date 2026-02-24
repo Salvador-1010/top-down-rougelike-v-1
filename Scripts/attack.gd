@@ -4,6 +4,13 @@ class_name playerattack
 @export var damage: float
 @export var combo_window: float
 
+#creates an exportable friction variable to apply when the player is trying to move while attacking
+@export var movingFrictionPerc_Attack1 : float
+@export var movingSpeedPerc_Attack1: float
+#declares the variable to store the NEW attacking friction
+#making it a certain percantage of the base friction so that later on maybe i can add scalability and
+#allow for later upgrades to improve mobility while attacking?
+
 var combo_queued := false
 var elapsed := 0.0
 
@@ -13,7 +20,7 @@ var window_end = 0
 func enter() -> void:
 	elapsed = 0.0
 	combo_queued = false
-	player.velocity = Vector2.ZERO
+	#player.velocity = Vector2.ZERO
 	player.sprite.play("Attack")
 	player.sprite.animation_finished.connect(transition)
 	
@@ -29,7 +36,9 @@ func exit() -> void:
 		player.sprite.animation_finished.disconnect(transition)
 	
 func update(_delta : float) -> void:
-	pass
+	#makes the sprite face whichever direction the player is moving/facing
+	if player.velocity.x:
+		player.sprite.flip_h = player.velocity.x < 0
 	
 func physics_update(_delta: float) -> void:
 	#stores the elapsed time to see if the player queued another attack before the window closed
@@ -37,6 +46,17 @@ func physics_update(_delta: float) -> void:
 	#makes sure that the attack was queued DURING the combow window and an attack hasnt already been queued
 	if (window_start < elapsed and elapsed < window_end) and !combo_queued and Input.is_action_just_pressed("Attack"):
 		combo_queued = true
+	
+	#gets the normalized vector in direction of player inpuits
+	var movement_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	player.velocity = movement_direction * player.speed * movingSpeedPerc_Attack1
+	
+	#code to allow the character to move even while the attack animation is going 
+	if player.velocity:
+		player.velocity = player.velocity.move_toward(player.velocity, player.speed * _delta)
+	else:
+		player.velocity = player.velocity.move_toward(Vector2.ZERO, player.baseFriction * _delta)
+	player.move_and_slide()
 	
 	#makes sure that the attack1 animation actually finishes before moving on 
 	await player.sprite.animation_finished

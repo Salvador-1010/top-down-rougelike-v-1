@@ -12,6 +12,7 @@ func update(_delta : float) -> void:
 	if Input.is_action_just_pressed("Attack"):
 		Transitioned.emit(self, "Attack")
 	
+	
 func physics_update(_delta: float) -> void:
 	if player.get_real_velocity() == Vector2.ZERO:
 		player.sprite.play("Idle")

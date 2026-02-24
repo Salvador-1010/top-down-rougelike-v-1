@@ -257,6 +257,8 @@ height = 16.0
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_tx1dd")
+speed = 175.0
+baseFriction = 25.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_op7ga")
@@ -278,13 +280,13 @@ script = ExtResource("3_6t5aa")
 
 [node name="Walk" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("6_3smsa")
-speed = 175.0
-friction = 25.0
 
 [node name="Attack" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("7_3smsa")
 damage = 25.0
 combo_window = 1.0
+movingFrictionPerc_Attack1 = 5.0
+movingSpeedPerc_Attack1 = 0.3
 
 [node name="Attack2" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("10_gymyn")

@@ -1,8 +1,6 @@
 extends State
 class_name playerwalk
 
-@export var speed: float
-@export var friction: float
 
 func exit() -> void:
 	pass
@@ -26,7 +24,7 @@ func physics_update(_delta: float) -> void:
 	
 	#gets the normalized vector in direction of player inpuits
 	var movement_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var velocity = movement_direction * speed
+	var velocity = movement_direction * player.speed
 
 	#switch to idle state if the velocity is 0
 	if velocity == Vector2.ZERO:
@@ -35,7 +33,7 @@ func physics_update(_delta: float) -> void:
 	#assigns the velocity depending on the actual value of the vector itself
 	player.velocity = velocity
 	if velocity:
-		player.velocity = player.velocity.move_toward(player.velocity, speed * _delta)
+		player.velocity = player.velocity.move_toward(player.velocity, player.speed * _delta)
 	else:
-		player.velocity = player.velocity.move_toward(Vector2.ZERO, friction * _delta)
+		player.velocity = player.velocity.move_toward(Vector2.ZERO, player.baseFriction * _delta)
 	player.move_and_slide()
