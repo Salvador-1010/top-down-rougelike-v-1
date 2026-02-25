@@ -17,19 +17,21 @@ var elapsed := 0.0
 var window_start = 0
 var window_end = 0
 
+#var to store whether the animation has finished so it can move onto the next state
 func enter() -> void:
 	elapsed = 0.0
-	combo_queued = false
-	#player.velocity = Vector2.ZERO
 	player.sprite.play("Attack")
 	player.sprite.animation_finished.connect(transition)
-	
+	self.animation_finished = false
 	#calculates the length of each frame using the animation fps
 	var frame_time = 1/player.sprite.sprite_frames.get_animation_speed("Attack")
 	#calculates the combow window from the actual timestamps of the specific frames (between frames 3 and 5)
 	window_start = (3) * frame_time
 	window_end = (5 + 1) * frame_time
 	
+	#makes sure that the attack1 animation actually finishes before moving on 
+	await player.sprite.animation_finished
+	self.animation_finished = true
 func exit() -> void:
 	#disconnects the animation signal to avoid any errors
 	if player.sprite.animation_finished.is_connected(transition):
@@ -39,6 +41,7 @@ func update(_delta : float) -> void:
 	#makes the sprite face whichever direction the player is moving/facing
 	if player.velocity.x:
 		player.sprite.flip_h = player.velocity.x < 0
+		
 	
 func physics_update(_delta: float) -> void:
 	#stores the elapsed time to see if the player queued another attack before the window closed
@@ -58,11 +61,12 @@ func physics_update(_delta: float) -> void:
 		player.velocity = player.velocity.move_toward(Vector2.ZERO, player.baseFriction * _delta)
 	player.move_and_slide()
 	
-	#makes sure that the attack1 animation actually finishes before moving on 
-	await player.sprite.animation_finished
 	#if the animation that finished playing is Attack1 then transition to attack2
-	if player.sprite.animation == "Attack":
+	if player.sprite.animation == "Attack" and self.animation_finished:
 		Transitioned.emit(self, "Attack2")
+	
+	if Input.is_action_just_pressed("Alt_Mouse") and self.animation_finished:
+		Transitioned.emit(self, "Block")
 
 func transition() -> void:
 	#checks to make sure that the finished animation was the attck so we can go back to idle

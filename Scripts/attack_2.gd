@@ -6,6 +6,7 @@ class_name playerattack2
 var attackbuffer
 var elapsed := 0.0
 
+
 func enter() -> void:
 	elapsed = 0.0
 	#sets the attack buffer to the const + the length of the actual animations 

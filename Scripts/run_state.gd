@@ -26,6 +26,9 @@ func physics_update(_delta: float) -> void:
 	var movement_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var velocity = movement_direction * player.speed
 
+	#switch to block state if the player presses block button
+	if Input.is_action_just_pressed("Alt_Mouse"):
+		Transitioned.emit(self, "Block")
 	#switch to idle state if the velocity is 0
 	if velocity == Vector2.ZERO:
 		Transitioned.emit(self, "Idle")
