@@ -3,7 +3,7 @@ class_name State
 
 signal Transitioned
 
-var player :CharacterBody2D
+var entity :CharacterBody2D
 var animation_finished : bool
 
 func enter() -> void:

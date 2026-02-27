@@ -20,7 +20,7 @@ func _ready() -> void:
 			#connects all of the childrens tranisiton functions 
 			child.Transitioned.connect(on_child_transition)
 			#gives all the children a reference to the player node (for sprite/physics updating)
-			child.player = playerRef
+			child.entity = playerRef
 			
 	if initialState:
 		#sets the current active state to whatever the initial state was (if given one)

@@ -11,9 +11,9 @@ func enter() -> void:
 	elapsed = 0.0
 	#sets the attack buffer to the const + the length of the actual animations 
 	#this way the buffer is applied AFTER the animation finished essentially
-	attackbuffer = attackbuffer_const + (1/player.sprite.sprite_frames.get_animation_speed("Attack2") * player.sprite.sprite_frames.get_frame_count("Attack2"))
-	player.sprite.play("Attack2")
-	await player.sprite.animation_finished
+	attackbuffer = attackbuffer_const + (1/entity.sprite.sprite_frames.get_animation_speed("Attack2") * entity.sprite.sprite_frames.get_frame_count("Attack2"))
+	entity.sprite.play("Attack2")
+	await entity.sprite.animation_finished
 
 func exit() -> void:
 	pass
@@ -25,5 +25,5 @@ func physics_update(_delta: float) -> void:
 	elapsed += _delta
 
 	#if the animation finished and the buffer is over then the player goes back to idle
-	if player.sprite.animation_finished and elapsed >= attackbuffer:
+	if entity.sprite.animation_finished and elapsed >= attackbuffer:
 		Transitioned.emit(self, "Idle")

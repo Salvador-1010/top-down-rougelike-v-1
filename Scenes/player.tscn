@@ -1,19 +1,26 @@
-[gd_scene load_steps=59 format=3 uid="uid://u10t0wdca25d"]
+[gd_scene load_steps=60 format=3 uid="uid://u10t0wdca25d"]
 
 [ext_resource type="Script" uid="uid://c8i8tbfohqy1b" path="res://Scripts/player.gd" id="1_tx1dd"]
 [ext_resource type="Texture2D" uid="uid://dv4ercgaef22d" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Attack01.png" id="1_x3wgy"]
 [ext_resource type="Texture2D" uid="uid://clk4yroi3bvtx" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Attack02.png" id="2_8erm5"]
 [ext_resource type="Texture2D" uid="uid://bjletbdkmms6g" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Idle.png" id="2_cvnsp"]
-[ext_resource type="Script" uid="uid://yup8tr4tmc68" path="res://Scripts/idle_state.gd" id="3_6t5aa"]
-[ext_resource type="Script" uid="uid://boye447vuxbdg" path="res://Scripts/player_state_machine.gd" id="3_vgqql"]
+[ext_resource type="Script" uid="uid://yup8tr4tmc68" path="res://Scripts/Player_Idle.gd" id="3_6t5aa"]
+[ext_resource type="Script" uid="uid://boye447vuxbdg" path="res://Scripts/State_machine.gd" id="3_vgqql"]
 [ext_resource type="Texture2D" uid="uid://cu7m5gxj8a5js" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Walk.png" id="3_x3wgy"]
 [ext_resource type="Texture2D" uid="uid://dpougwn1k71gw" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Block.png" id="4_7dp3o"]
 [ext_resource type="Texture2D" uid="uid://bkkeagjvqyuj0" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Death.png" id="5_h4iuc"]
-[ext_resource type="Script" uid="uid://0sx64n6eb8xv" path="res://Scripts/run_state.gd" id="6_3smsa"]
+[ext_resource type="Script" uid="uid://0sx64n6eb8xv" path="res://Scripts/Player_Move.gd" id="6_3smsa"]
 [ext_resource type="Texture2D" uid="uid://dkcrrgugsb40m" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight/Knight/Knight-Hurt.png" id="6_fd4e3"]
-[ext_resource type="Script" uid="uid://dtodgnftamjan" path="res://Scripts/attack.gd" id="7_3smsa"]
-[ext_resource type="Script" uid="uid://dmueeteal7vyf" path="res://Scripts/attack_2.gd" id="10_gymyn"]
-[ext_resource type="Script" uid="uid://pf7a8biou582" path="res://Scripts/block.gd" id="14_qqcod"]
+[ext_resource type="Script" uid="uid://dtodgnftamjan" path="res://Scripts/Player_Attack1.gd" id="7_3smsa"]
+[ext_resource type="Script" uid="uid://dmueeteal7vyf" path="res://Scripts/Player_Attack2.gd" id="10_gymyn"]
+[ext_resource type="Script" uid="uid://pf7a8biou582" path="res://Scripts/Player_Block.gd" id="14_qqcod"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q13i1"]
+radius = 5.0
+height = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dp3o"]
+size = Vector2(17.75, 22)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qqcod"]
 atlas = ExtResource("1_x3wgy")
@@ -347,27 +354,34 @@ animations = [{
 "speed": 9.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q13i1"]
-radius = 5.0
-height = 16.0
-
 [node name="Player" type="CharacterBody2D"]
+z_index = 1
 script = ExtResource("1_tx1dd")
 speed = 175.0
 baseFriction = 25.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_op7ga")
-animation = &"Block"
-autoplay = "Idle"
-frame = 2
-frame_progress = 1.0
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 0)
 shape = SubResource("CapsuleShape2D_q13i1")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(4, 4)
+
+[node name="Facing" type="Node2D" parent="."]
+
+[node name="SwordHitBox" type="Area2D" parent="Facing"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Facing/SwordHitBox"]
+position = Vector2(16, -1)
+shape = SubResource("RectangleShape2D_7dp3o")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Facing"]
+scale = Vector2(1.25, 1.25)
+sprite_frames = SubResource("SpriteFrames_op7ga")
+animation = &"Attack"
+autoplay = "Idle"
+frame = 6
+frame_progress = 1.0
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
 script = ExtResource("3_vgqql")
@@ -393,4 +407,4 @@ script = ExtResource("10_gymyn")
 script = ExtResource("14_qqcod")
 metadata/_custom_type_script = "uid://c0y5e3prueov4"
 
-[connection signal="animation_finished" from="AnimatedSprite2D" to="PlayerStateMachine" method="_on_animated_sprite_2d_animation_finished"]
+[connection signal="animation_finished" from="Facing/AnimatedSprite2D" to="PlayerStateMachine" method="_on_animated_sprite_2d_animation_finished"]

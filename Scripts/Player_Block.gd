@@ -8,10 +8,10 @@ extends State
 #bool to store whether the block animation has finsihed yet or not 
 var block_done
 func enter():
-	player.sprite.play("Block")
+	entity.sprite.play("Block")
 	self.animation_finished = false
 	#waits for the block animation to finish and then can check for other inputs to switch states
-	await player.sprite.animation_finished
+	await entity.sprite.animation_finished
 	self.animation_finished = true
 func exit():
 	pass

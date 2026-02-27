@@ -3,7 +3,7 @@ class_name playeridle
 
 
 func enter():
-	player.sprite.play("Idle")
+	entity.sprite.play("Idle")
 	
 func update(_delta : float) -> void:
 	#if movement input is detected, switches to that state
@@ -19,5 +19,5 @@ func update(_delta : float) -> void:
 		Transitioned.emit(self, "Block")
 	
 func physics_update(_delta: float) -> void:
-	if player.get_real_velocity() == Vector2.ZERO:
-		player.sprite.play("Idle")
+	if entity.get_real_velocity() == Vector2.ZERO:
+		entity.sprite.play("Idle")
