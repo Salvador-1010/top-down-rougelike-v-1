@@ -294,6 +294,12 @@ frame_progress = 0.47300306
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_r4o34")
 
+[node name="WanderRaycast" type="RayCast2D" parent="."]
+target_position = Vector2(16, 0)
+
+[node name="WanderWaitTimer" type="Timer" parent="."]
+wait_time = 3.0
+
 [node name="SlimePursueRadius" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlimePursueRadius"]
@@ -312,4 +318,5 @@ seek_radius = 50
 script = ExtResource("9_r4o34")
 metadata/_custom_type_script = "uid://c0y5e3prueov4"
 
+[connection signal="timeout" from="WanderWaitTimer" to="SlimeStateMachine/Idle" method="_on_wander_wait_timer_timeout"]
 [connection signal="body_entered" from="SlimePursueRadius" to="SlimeStateMachine/Idle" method="_on_slime_pursue_radius_body_entered"]

@@ -3548,4 +3548,4 @@ tile_set = SubResource("TileSet_psl12")
 position = Vector2(-34, -42)
 
 [node name="Slime" parent="." instance=ExtResource("8_huasi")]
-position = Vector2(40, -43)
+position = Vector2(-105, -88)
