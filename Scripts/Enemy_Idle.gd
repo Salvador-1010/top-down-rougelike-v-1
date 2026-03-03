@@ -33,9 +33,8 @@ func exit() -> void:
 	pass
 
 func update(_delta : float) -> void:
-	entity.global_position += Vector2.RIGHT
-	entity.move_and_slide()
 	print(initial_pos, " ", entity.global_position)
+	
 	#checks if the enemy is supposed to be wandering
 	#also checks that the wander wait timer is stopped (ie the player is on the move)
 	#finally makes sure that the _get_rand_vector() function hasnt already ran 
