@@ -313,7 +313,8 @@ initialState = NodePath("Idle")
 
 [node name="Idle" type="Node" parent="SlimeStateMachine"]
 script = ExtResource("8_r4o34")
-seek_radius = 50
+seek_radius = 40.0
+wait_time = 1.5
 
 [node name="Pursue" type="Node" parent="SlimeStateMachine"]
 script = ExtResource("9_r4o34")
