@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://ywguvuys0cxi"]
+[gd_scene load_steps=48 format=3 uid="uid://ywguvuys0cxi"]
 
 [ext_resource type="Script" uid="uid://cok4evgu3j1fs" path="res://Scripts/slime.gd" id="1_aiwxb"]
 [ext_resource type="Texture2D" uid="uid://do2hd6kni8rmk" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Slime/Slime/Slime-Idle.png" id="1_jokqx"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://boye447vuxbdg" path="res://Scripts/State_machine.gd" id="7_e388w"]
 [ext_resource type="Script" uid="uid://can7wapkc8kli" path="res://Scripts/Enemy_Idle.gd" id="8_r4o34"]
 [ext_resource type="Script" uid="uid://dlkttcfrlyvq3" path="res://Scripts/Enemy_Pursue.gd" id="9_r4o34"]
+[ext_resource type="Script" uid="uid://bnngcabgomu2x" path="res://Scripts/Enemy_Wander.gd" id="10_y26kt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c7ij5"]
 atlas = ExtResource("2_vblni")
@@ -316,6 +317,10 @@ seek_radius = 50
 
 [node name="Pursue" type="Node" parent="SlimeStateMachine"]
 script = ExtResource("9_r4o34")
+metadata/_custom_type_script = "uid://c0y5e3prueov4"
+
+[node name="Wander" type="Node" parent="SlimeStateMachine"]
+script = ExtResource("10_y26kt")
 metadata/_custom_type_script = "uid://c0y5e3prueov4"
 
 [connection signal="timeout" from="WanderWaitTimer" to="SlimeStateMachine/Idle" method="_on_wander_wait_timer_timeout"]
