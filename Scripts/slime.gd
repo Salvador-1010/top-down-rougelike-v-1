@@ -7,4 +7,4 @@ extends CharacterBody2D
 @onready var wander_raycast: RayCast2D = $WanderRaycast
 
 var wander_target_global: Vector2 = Vector2.ZERO
-var enemy_speed = 125
+var enemy_speed = 10

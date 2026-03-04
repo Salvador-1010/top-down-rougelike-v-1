@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://cclqt6nod1sw8"]
+[gd_scene load_steps=22 format=4 uid="uid://cclqt6nod1sw8"]
 
 [ext_resource type="Texture2D" uid="uid://cx6i3ix5l5dc2" path="res://Assets/mainlevbuild.png" id="1_6l7je"]
 [ext_resource type="Texture2D" uid="uid://dl5pmpnvbynkx" path="res://Assets/decorative.png" id="2_jv6wh"]
@@ -3527,6 +3527,9 @@ sources/9 = SubResource("TileSetAtlasSource_gnsmo")
 sources/10 = SubResource("TileSetAtlasSource_ioaeq")
 sources/11 = SubResource("TileSetAtlasSource_7ewk0")
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_huasi"]
+radius = 39.051247
+
 [node name="MainScene" type="Node2D"]
 
 [node name="GroundLayer" type="TileMapLayer" parent="."]
@@ -3546,6 +3549,12 @@ tile_set = SubResource("TileSet_psl12")
 
 [node name="Player" parent="." instance=ExtResource("3_jv6wh")]
 position = Vector2(-34, -42)
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(-7, 23)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_huasi")
 
 [node name="Slime" parent="." instance=ExtResource("8_huasi")]
 position = Vector2(-7, 23)
