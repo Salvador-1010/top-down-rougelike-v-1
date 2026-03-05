@@ -14,7 +14,7 @@ func update(_delta : float) -> void:
 		Transitioned.emit(self, "Attack")
 	#makes the sprite face whichever direction the player is moving/facing
 	if entity.velocity.x:
-		#changed the logic from the previous one because now instead i am just flipping an entire 2dnode in order
+		#changed the logic from the previous one because now instead, i am just flipping an entire 2dnode in order
 		#to flip mult things at once so i just find the velocity and divide it by the magnitude to get
 		#either -1 or 1 (there could be a better way to do this like some normalizing function but i tried
 		#to use normalized().x but that didnt work)

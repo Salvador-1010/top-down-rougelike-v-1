@@ -11,6 +11,9 @@
 [ext_resource type="Script" uid="uid://dlkttcfrlyvq3" path="res://Scripts/Enemy_Pursue.gd" id="9_r4o34"]
 [ext_resource type="Script" uid="uid://bnngcabgomu2x" path="res://Scripts/Enemy_Wander.gd" id="10_y26kt"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_r4o34"]
+radius = 5.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_c7ij5"]
 atlas = ExtResource("2_vblni")
 region = Rect2(0, 0, 100, 100)
@@ -277,26 +280,26 @@ animations = [{
 "speed": 6.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_r4o34"]
-radius = 5.0
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_e388w"]
 radius = 20.0
 
 [node name="Slime" type="CharacterBody2D"]
 script = ExtResource("1_aiwxb")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.7, 0.7)
-sprite_frames = SubResource("SpriteFrames_e388w")
-animation = &"Idle"
-frame_progress = 0.47300306
+enemy_speed = 30
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_r4o34")
 
 [node name="WanderRaycast" type="RayCast2D" parent="."]
 target_position = Vector2(16, 0)
+
+[node name="Facing" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Facing"]
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_e388w")
+animation = &"Idle"
+frame_progress = 0.47300306
 
 [node name="WanderWaitTimer" type="Timer" parent="."]
 wait_time = 3.0
@@ -314,7 +317,6 @@ initialState = NodePath("Idle")
 [node name="Idle" type="Node" parent="SlimeStateMachine"]
 script = ExtResource("8_r4o34")
 seek_radius = 40.0
-wait_time = 1.5
 
 [node name="Pursue" type="Node" parent="SlimeStateMachine"]
 script = ExtResource("9_r4o34")
