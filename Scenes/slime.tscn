@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://ywguvuys0cxi"]
+[gd_scene load_steps=49 format=3 uid="uid://ywguvuys0cxi"]
 
 [ext_resource type="Script" uid="uid://cok4evgu3j1fs" path="res://Scripts/slime.gd" id="1_aiwxb"]
 [ext_resource type="Texture2D" uid="uid://do2hd6kni8rmk" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Slime/Slime/Slime-Idle.png" id="1_jokqx"]
@@ -280,6 +280,8 @@ animations = [{
 "speed": 6.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_y26kt"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_e388w"]
 radius = 20.0
 
@@ -304,11 +306,17 @@ frame_progress = 0.47300306
 [node name="WanderWaitTimer" type="Timer" parent="."]
 wait_time = 3.0
 
+[node name="WanderRadius" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WanderRadius"]
+shape = SubResource("CircleShape2D_y26kt")
+debug_color = Color(0.746846, 0.33843252, 0.7988464, 0.41960785)
+
 [node name="SlimePursueRadius" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SlimePursueRadius"]
 shape = SubResource("CircleShape2D_e388w")
-debug_color = Color(0.6745098, 0.34117648, 0.54901963, 0.32156864)
+debug_color = Color(0.19609785, 0.47143728, 0.8255688, 0.32156864)
 
 [node name="SlimeStateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
 script = ExtResource("7_e388w")

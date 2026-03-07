@@ -16,10 +16,20 @@ func update(_delta : float) -> void:
 	#finds the distance between the slimes pos (local to the slime scene) and the raycast target (local to slime scene
 	#since the raycast is child of slime)
 	if (entity.global_position-entity.initial_global_pos).distance_to(entity.wander_raycast.target_position) <= 1:
-		print("trans")
 		Transitioned.emit(self, "Idle")
 
 func physics_update(_delta: float) -> void:
+	
+	while !entity.wander_radius.get_overlapping_bodies().has(self.entity):
+		entity.velocity = -entity.wander_dir * entity.enemy_speed
+		entity.move_and_slide()
+
+	#sets the raycast and wander radius global pos to the slimes initial global pos to ensure
+	#it always stays within a specific radius
 	entity.wander_raycast.global_position = entity.initial_global_pos
+	entity.wander_radius.global_position = entity.initial_global_pos
+	
+	#sets the slime to move in the normalized wander_direciton found in the idle state before the wander
+	#state was called
 	entity.velocity = entity.wander_dir * entity.enemy_speed
 	entity.move_and_slide()

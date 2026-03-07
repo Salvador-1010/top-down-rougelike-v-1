@@ -24,6 +24,8 @@ func enter() -> void:
 		entity.initial_global_pos = entity.global_position
 	#sets the pursue radius to whatever was set in the inspector 
 	entity.pursueRadius.get_node("CollisionShape2D").shape.radius = seek_radius
+	#sets the wander radius to whatever the pursue raidus is too
+	entity.wander_radius.get_node("CollisionShape2D").shape.radius = seek_radius
 	#set is_wandering to false by default
 	is_wandering = false
 
@@ -38,7 +40,6 @@ func exit() -> void:
 	pass
 
 func update(_delta : float) -> void:
-	print(entity.wander_wait_timer.wait_time)
 	if entity.wander_dir == Vector2.ZERO:
 		return
 	else:
@@ -72,8 +73,8 @@ func _get_dir():
 	entity.wander_raycast.target_position = global_target - entity.initial_global_pos
 	
 	#start of code to check if the slime can even go where intended
-	if _is_path_clear(entity.global_position, entity.wander_raycast.target_position):
+	if _is_path_clear(entity.wander_raycast, entity.wander_raycast.target_position + entity.initial_global_pos):
 		pass
 
-func _is_path_clear(current_location: Vector2, target_location: Vector2) -> bool:
+func _is_path_clear(enemy_raycast: RayCast2D, target_location: Vector2) -> bool:
 	return false
