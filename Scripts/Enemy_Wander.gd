@@ -1,6 +1,8 @@
 extends State
 class_name EnemeyWanderState
 
+#var to track whether the enemy has already exited their wander radius once before
+var has_exited : bool
 
 func enter() -> void:
 	entity.sprite.play("Walk")
@@ -10,6 +12,9 @@ func exit() -> void:
 	pass
 
 func update(_delta : float) -> void:
+	#sets the wander_dir every frame so that it will change the trajectory to always be on target and even 
+	#if it runs into sometihng and is set off course it still tries to move to the target
+	entity.wander_dir = (entity.wander_target_global - entity.global_position).normalized()
 	#flips the facing node based on the sign of the x velocity
 	#divides by abs value in order to just get the sign with magnitude 1 
 	entity.facing.scale.x = entity.velocity.x/abs(entity.velocity.x)
@@ -17,12 +22,9 @@ func update(_delta : float) -> void:
 	#since the raycast is child of slime)
 	if (entity.global_position-entity.initial_global_pos).distance_to(entity.wander_raycast.target_position) <= 1:
 		Transitioned.emit(self, "Idle")
+		
 
 func physics_update(_delta: float) -> void:
-	
-	while !entity.wander_radius.get_overlapping_bodies().has(self.entity):
-		entity.velocity = -entity.wander_dir * entity.enemy_speed
-		entity.move_and_slide()
 
 	#sets the raycast and wander radius global pos to the slimes initial global pos to ensure
 	#it always stays within a specific radius
@@ -33,3 +35,6 @@ func physics_update(_delta: float) -> void:
 	#state was called
 	entity.velocity = entity.wander_dir * entity.enemy_speed
 	entity.move_and_slide()
+
+
+	

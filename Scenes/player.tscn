@@ -408,4 +408,7 @@ script = ExtResource("10_gymyn")
 script = ExtResource("14_qqcod")
 metadata/_custom_type_script = "uid://c0y5e3prueov4"
 
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(37, 0)
+
 [connection signal="animation_finished" from="Facing/AnimatedSprite2D" to="PlayerStateMachine" method="_on_animated_sprite_2d_animation_finished"]

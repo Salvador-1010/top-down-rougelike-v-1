@@ -1,6 +1,7 @@
 extends State
 class_name playerwalk
 
+@onready var ray_cast_2d: RayCast2D = $"../../RayCast2D"
 
 func exit() -> void:
 	pass
@@ -9,6 +10,8 @@ func enter() -> void:
 	entity.sprite.play("Walk")
 
 func update(_delta : float) -> void:
+	if ray_cast_2d.get_collider():
+		print(ray_cast_2d.get_collider().to_string())
 	#swaps to attack state even if moving if input is detected
 	if Input.is_action_pressed("Attack"):
 		Transitioned.emit(self, "Attack")
