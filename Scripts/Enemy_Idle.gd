@@ -33,9 +33,15 @@ func enter() -> void:
 	
 	#starts the timer with the intial wait time that was set on the timer node
 	entity.wander_wait_timer.start()
+	
+	#connects the area2d detection function
+	entity.pursueRadius.body_entered.connect(_on_slime_pursue_radius_body_entered)
 
 func exit() -> void:
-	pass
+	#stops the wander reset timer so that it doesnt continue to update even out of the state 
+	entity.wander_wait_timer.stop()
+	#disconnects the area2d detection function
+	#entity.pursueRadius.body_entered.disconnect(_on_slime_pursue_radius_body_entered)
 
 func update(_delta : float) -> void:
 	#if the target has been picked then tranisiton to wander
@@ -82,3 +88,12 @@ func _get_dir():
 
 func _is_path_clear(enemy_raycast: RayCast2D, target_location: Vector2) -> bool:
 	return false
+
+#if it detects the player enteres the pursue radius it switches to the pursue state
+func _on_slime_pursue_radius_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Player"):
+		#assigns the tracker vector to the detected players current position minus the enemies current 
+		#position in order to find the proper global position and then normalizes it 
+		entity.player_tracker = (body.global_position - entity.global_position).normalized()
+		entity.testray.target_position = (body.global_position - entity.global_position)
+		Transitioned.emit(self,"Pursue")
