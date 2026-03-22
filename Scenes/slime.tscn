@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://boye447vuxbdg" path="res://Scripts/State_machine.gd" id="7_e388w"]
 [ext_resource type="Script" uid="uid://can7wapkc8kli" path="res://Scripts/Enemy_Idle.gd" id="8_r4o34"]
 [ext_resource type="Script" uid="uid://dlkttcfrlyvq3" path="res://Scripts/Enemy_Pursue.gd" id="9_r4o34"]
-[ext_resource type="Script" uid="uid://bnngcabgomu2x" path="res://Scripts/Enemy_Wander.gd" id="10_y26kt"]
+[ext_resource type="Script" path="res://Scripts/Enemy_Wander.gd" id="10_y26kt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r4o34"]
 radius = 5.0
@@ -307,6 +307,7 @@ frame_progress = 0.47300306
 wait_time = 3.0
 
 [node name="PursueTimer" type="Timer" parent="."]
+wait_time = 1.5
 
 [node name="WanderRadius" type="Area2D" parent="."]
 
@@ -339,5 +340,6 @@ metadata/_custom_type_script = "uid://c0y5e3prueov4"
 [node name="testray" type="RayCast2D" parent="."]
 
 [connection signal="timeout" from="WanderWaitTimer" to="SlimeStateMachine/Idle" method="_on_wander_wait_timer_timeout"]
+[connection signal="timeout" from="PursueTimer" to="SlimeStateMachine/Pursue" method="_on_pursue_timer_timeout"]
 [connection signal="body_entered" from="SlimePursueRadius" to="SlimeStateMachine/Idle" method="_on_slime_pursue_radius_body_entered"]
 [connection signal="body_entered" from="SlimePursueRadius" to="SlimeStateMachine/Wander" method="_on_slime_pursue_radius_body_entered"]

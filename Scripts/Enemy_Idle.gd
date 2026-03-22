@@ -14,6 +14,8 @@ var destination_picked : bool
 #var initial_pos 
 #^^ replaced this var with a var that is stored in the slime characterbody2d script
 
+var initial_speed = 0
+var initial_radius = 0
 
 func enter() -> void:
 	entity.sprite.play("Idle")

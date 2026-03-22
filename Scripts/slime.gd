@@ -9,6 +9,8 @@ extends CharacterBody2D
 #added facing node2d in order to store all the nodes that i want to flip depending on where the enemy is facing
 @onready var facing: Node2D = $Facing
 @onready var testray: RayCast2D = $testray
+#node to keep track of pursuit cooldown/reset
+@onready var pursue_timer: Timer = $PursueTimer
 
 #var to track the enemy when they are detected to enter
 var player_tracker: Vector2 = Vector2.ZERO
