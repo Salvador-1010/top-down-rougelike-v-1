@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+
 @onready var collision: CollisionShape2D = $CollisionShape2D
 @onready var pursueRadius: Area2D = $SlimePursueRadius
 @onready var wander_radius: Area2D = $WanderRadius
@@ -12,6 +13,9 @@ extends CharacterBody2D
 #node to keep track of pursuit cooldown/reset
 @onready var pursue_timer: Timer = $PursueTimer
 
+#creates a duplicate of the slimes pursue radius resource
+@onready var collision_dupe = self.pursueRadius.get_node("CollisionShape2D")
+
 #var to track the enemy when they are detected to enter
 var player_tracker: Vector2 = Vector2.ZERO
 
@@ -22,3 +26,7 @@ var wander_dir : Vector2 = Vector2.ZERO
 var initial_global_pos = null
 
 @export var enemy_speed = 100
+@export var enemy_damage = 1
+
+func _ready() -> void:	
+	collision_dupe.shape = collision_dupe.shape.duplicate()

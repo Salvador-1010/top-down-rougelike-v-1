@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://ywguvuys0cxi"]
+[gd_scene load_steps=51 format=3 uid="uid://ywguvuys0cxi"]
 
 [ext_resource type="Script" uid="uid://cok4evgu3j1fs" path="res://Scripts/slime.gd" id="1_aiwxb"]
 [ext_resource type="Texture2D" uid="uid://do2hd6kni8rmk" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Slime/Slime/Slime-Idle.png" id="1_jokqx"]
@@ -9,7 +9,8 @@
 [ext_resource type="Script" uid="uid://boye447vuxbdg" path="res://Scripts/State_machine.gd" id="7_e388w"]
 [ext_resource type="Script" uid="uid://can7wapkc8kli" path="res://Scripts/Enemy_Idle.gd" id="8_r4o34"]
 [ext_resource type="Script" uid="uid://dlkttcfrlyvq3" path="res://Scripts/Enemy_Pursue.gd" id="9_r4o34"]
-[ext_resource type="Script" path="res://Scripts/Enemy_Wander.gd" id="10_y26kt"]
+[ext_resource type="Script" uid="uid://bnngcabgomu2x" path="res://Scripts/Enemy_Wander.gd" id="10_y26kt"]
+[ext_resource type="Script" uid="uid://bhvn0qn5tr3ew" path="res://Scripts/Enemy_Attack1.gd" id="11_c7ij5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_r4o34"]
 radius = 5.0
@@ -280,6 +281,10 @@ animations = [{
 "speed": 6.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_psnrq"]
+radius = 4.0
+height = 16.0
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_y26kt"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_e388w"]
@@ -300,8 +305,17 @@ target_position = Vector2(16, 0)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Facing"]
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_e388w")
-animation = &"Idle"
-frame_progress = 0.47300306
+animation = &"Attack1"
+frame = 5
+frame_progress = 1.0
+
+[node name="Attack 1 Area" type="Area2D" parent="Facing"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Facing/Attack 1 Area"]
+position = Vector2(10, 0)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_psnrq")
+debug_color = Color(0.8279028, 0.34901837, 0.49554044, 0.41960785)
 
 [node name="WanderWaitTimer" type="Timer" parent="."]
 wait_time = 3.0
@@ -336,6 +350,9 @@ metadata/_custom_type_script = "uid://c0y5e3prueov4"
 [node name="Wander" type="Node" parent="SlimeStateMachine"]
 script = ExtResource("10_y26kt")
 metadata/_custom_type_script = "uid://c0y5e3prueov4"
+
+[node name="Attack1" type="Node" parent="SlimeStateMachine"]
+script = ExtResource("11_c7ij5")
 
 [node name="testray" type="RayCast2D" parent="."]
 

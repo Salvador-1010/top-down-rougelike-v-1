@@ -9,16 +9,12 @@ var enemy_inside := false
 
 
 func enter() -> void:
-	#duplicates the shape node so that it wont affect other slimes radii
-	var collision_dupe = entity.pursueRadius.get_node("CollisionShape2D")
-	collision_dupe.shape = collision_dupe.shape.duplicate()
-	
 	#stores the intial, unchanged speed and radius
 	initial_speed = entity.enemy_speed
 	initial_radius = entity.pursueRadius.get_node("CollisionShape2D").shape.radius
 	entity.sprite.play("Move")
 	#expands the enemies pursue radius 
-	collision_dupe.shape.radius *= 2.25
+	entity.collision_dupe.shape.radius *= 2.25
 	#increases the enemies speed shortly
 	entity.enemy_speed *= 2
 func exit() -> void:
@@ -26,7 +22,6 @@ func exit() -> void:
 	entity.pursueRadius.get_node("CollisionShape2D").shape.radius = initial_radius
 
 func update(_delta : float) -> void:
-	
 	#checks to see if the player is STILL in the area2d and if it is, it uses its realtime position for the tracker
 	#in hindsight there probably is a much MUCH better way to do this that is less stinky and plus this probabyl would
 	#build horribly if i ever want to implement multiple players but its V1 so just something to consider

@@ -84,12 +84,7 @@ func _get_dir():
 	#made local to the slime scene again since it is a child 
 	entity.wander_raycast.target_position = entity.wander_target_global - entity.initial_global_pos
 	
-	#start of code to check if the slime can even go where intended
-	if _is_path_clear(entity.wander_raycast, entity.wander_raycast.target_position + entity.initial_global_pos):
-		pass
 
-func _is_path_clear(enemy_raycast: RayCast2D, target_location: Vector2) -> bool:
-	return false
 
 #if it detects the player enteres the pursue radius it switches to the pursue state
 func _on_slime_pursue_radius_body_entered(body: Node2D) -> void:

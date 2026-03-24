@@ -31,12 +31,12 @@ func update(_delta : float) -> void:
 		
 
 func physics_update(_delta: float) -> void:
-
+	NavigationAgent2D.target_position = entity.wander_target_global
 	#sets the raycast and wander radius global pos to the slimes initial global pos to ensure
 	#it always stays within a specific radius
 	entity.wander_raycast.global_position = entity.initial_global_pos
 	entity.wander_radius.global_position = entity.initial_global_pos
-	
+	entity.wander_raycast.target_position = NavigationAgent2D.target_position
 	#sets the slime to move in the normalized wander_direciton found in the idle state before the wander
 	#state was called
 	entity.velocity = entity.wander_dir * entity.enemy_speed
