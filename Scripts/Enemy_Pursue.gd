@@ -9,12 +9,16 @@ var enemy_inside := false
 
 
 func enter() -> void:
+	#duplicates the shape node so that it wont affect other slimes radii
+	var collision_dupe = entity.pursueRadius.get_node("CollisionShape2D")
+	collision_dupe.shape = collision_dupe.shape.duplicate()
+	
 	#stores the intial, unchanged speed and radius
 	initial_speed = entity.enemy_speed
 	initial_radius = entity.pursueRadius.get_node("CollisionShape2D").shape.radius
 	entity.sprite.play("Move")
 	#expands the enemies pursue radius 
-	entity.pursueRadius.get_node("CollisionShape2D").shape.radius *=2.25
+	collision_dupe.shape.radius *= 2.25
 	#increases the enemies speed shortly
 	entity.enemy_speed *= 2
 func exit() -> void:
@@ -22,9 +26,11 @@ func exit() -> void:
 	entity.pursueRadius.get_node("CollisionShape2D").shape.radius = initial_radius
 
 func update(_delta : float) -> void:
+	
 	#checks to see if the player is STILL in the area2d and if it is, it uses its realtime position for the tracker
 	#in hindsight there probably is a much MUCH better way to do this that is less stinky and plus this probabyl would
 	#build horribly if i ever want to implement multiple players but its V1 so just something to consider
+	enemy_inside = false
 	for bodies in entity.pursueRadius.get_overlapping_bodies():
 		if bodies.is_in_group("Player"):
 			enemy_inside = true
@@ -32,17 +38,28 @@ func update(_delta : float) -> void:
 			last_enemy_pos = bodies.global_position
 			entity.player_tracker = (bodies.global_position - entity.global_position).normalized()
 			entity.testray.target_position = (bodies.global_position - entity.global_position)
-		else:
-			enemy_inside = false
-	entity.facing.scale.x = entity.velocity.x/abs(entity.velocity.x)
+
+	#fixed the conditional to work around the enemy velocity being 0
+	if entity.velocity.x:
+		entity.facing.scale.x = sign(entity.velocity.x)
+		
+	#if the slime has slowed down to zero after pursuing itll go back to wandeirng
+	if entity.velocity.distance_to(Vector2.ZERO) < 1:
+		Transitioned.emit(self, "Idle")
 
 func physics_update(_delta: float) -> void:
-	if !enemy_inside and (entity.global_position.distance_to(last_enemy_pos) < 1):
-		print("not")
-		entity.velocity.move_toward(Vector2.ZERO,_delta)
+	var decel = 130.0
+	#if the enemy isnt inside of the prusue radis
+	if !enemy_inside:
+		#it will move towards the last known location
+		if entity.global_position.distance_to(last_enemy_pos) > 9:
+			entity.velocity = (last_enemy_pos - entity.global_position).normalized() * entity.enemy_speed
+		else:
+			#once it gets closer it will slow down 
+			entity.velocity = entity.velocity.move_toward(Vector2.ZERO,decel * _delta)
 	else:
 		entity.velocity = entity.player_tracker * entity.enemy_speed
-		entity.move_and_slide()
+	entity.move_and_slide()
 
 #when the timer runs it, it makes the enemy go back to idling since the player "got away"
 func _on_pursue_timer_timeout() -> void:

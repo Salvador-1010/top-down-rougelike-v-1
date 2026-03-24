@@ -21,7 +21,9 @@ func update(_delta : float) -> void:
 	entity.wander_dir = (entity.wander_target_global - entity.global_position).normalized()
 	#flips the facing node based on the sign of the x velocity
 	#divides by abs value in order to just get the sign with magnitude 1 
-	entity.facing.scale.x = entity.velocity.x/abs(entity.velocity.x)
+	#fixed the conditional to work around the enemy velocity being 0
+	if entity.velocity.x:
+		entity.facing.scale.x = sign(entity.velocity.x)
 	#finds the distance between the slimes pos (local to the slime scene) and the raycast target (local to slime scene
 	#since the raycast is child of slime)
 	if (entity.global_position-entity.initial_global_pos).distance_to(entity.wander_raycast.target_position) <= 1:
